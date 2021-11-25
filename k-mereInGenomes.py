@@ -4,65 +4,48 @@ from Bio import SeqIO
 from pathlib import Path
 import os
 import pandas as pd
+#%% #Special sign to uses this part of the code in vscode as one block
+DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
+dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
+trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
+###########################
+#def read_file(path):    #useless right now
+#    with open(path, mode="r", encoding="utf8") as infile:
+#        seq = ''.join([line.strip("\n\r").replace("N", "").replace(",", "")
+#                       .replace(" ", "") for line in infile if not line.startswith(">")])
+#    return seq
+###########################
 
 #%%
-DNABases = ["A", "T", "C", "G"]
-dimerList = []
-trimerList = []
-###########################
-def cDimerList(base, dList):
-    for x in base:
-        for y in base:
-            dList.append(x + y)
-    return dList
-###########################
-def cTrimerList(base, tList):
-    for x in base:
-        for y in base:
-            for z in base:
-                tList.append(x + y + z)
-    return tList
-###########################
-def read_file(path):
-    with open(path, mode="r", encoding="utf8") as infile:
-        seq = ''.join([line.strip("\n\r").replace("N", "").replace(",", "")
-                       .replace(" ", "") for line in infile if not line.startswith(">")])
-    return seq
-###########################
+def directoryIterator(directory, outputfile):   #to iterate over a whole given directory
 
-cDimerList(DNABases, dimerList)
-cTrimerList(DNABases, trimerList)
-
-def directoryIterator(directory, outputfile):
-
-    for filename in os.listdir(directory):
-        fileDirectory = str(directory+filename)
-        dataParser(fileDirectory, outputfile)
+    for filename in os.listdir(directory): #uses listdir from os package to generate al list from the files of a given folder
+        fileDirectory = str(directory+filename) #produces a string
+        dataParser(fileDirectory, outputfile) #Acquise the features of every File in given folder
     outputfile.close()
 
 def headLine(dirk):
     outPutFile = open(dirk,'w')
     headLineString = str("Gene\tlength")
     for Base in DNABases:
-        primeString =str("\t"+Base+"%")
-        headLineString +=primeString
+        headLineString +=str("\t"+Base+"%")
 
     for dimer in dimerList:
-        dString =str("\t"+dimer+"%")
-        headLineString +=dString
+        headLineString +=str("\t"+dimer+"%")
 
     for trimer in trimerList:
-        tString =str("\t"+trimer+"%")
-        headLineString +=tString
+        headLineString +=str("\t"+trimer+"%")
     headLineString += "\n"
     outPutFile.write(headLineString)
     print(headLineString)
     return outPutFile
     
-def dataParser(SequenceInput, path):
-    outPutLine = '%s\t' % (SequenceInput)
+def dataParser(SequenceInput, path): #Acquise the features of a given file in folder
+    
+    outPutLine = '' #references the outPutLine
     for curRecord in SeqIO.parse(SequenceInput, "fasta"):
-        length = len(curRecord.name)
+        outPutLine += '%s\t' % curRecord.id #every outPutline does start with the id of the record
+        length = len(curRecord) #
         outPutLine += '%i\t' % (length)
         lengthstr = str(length)
         print("Current iterated sequence length: "+lengthstr)
@@ -93,7 +76,7 @@ def thirdTask(file):
 
 def secondTask(file):
     print("do you wanna see the results?")
-    while True:
+    while 1:
         sTInput = input("[y/n]")
         if sTInput == "y":
             df = pd.read_csv(file,index_col = 0, delimiter='\t')
@@ -109,7 +92,7 @@ def secondTask(file):
 
 def inputManager():
     print("Hello, I'm here to help you Acquire Data from your given Fasta files.\n")
-    while True:
+    while 1:
         userInput = input("Please insert the path of your Folder: ")
         isdir = os.path.isdir(userInput)
         if isdir == True:
@@ -129,6 +112,3 @@ def inputManager():
 
 
 inputManager()
-
-
-# %%
