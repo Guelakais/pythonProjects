@@ -26,46 +26,45 @@ def directoryIterator(directory, outputfile):   #to iterate over a whole given d
 
 def headLine(dirk):
     outPutFile = open(dirk,'w')
-    headLineString = str("Gene\tlength")
+    headLineString = str("Gene,length")
     for Base in DNABases:
-        headLineString +=str("\t"+Base+"%")
+        headLineString +=str(","+Base+"%")
 
     for dimer in dimerList:
-        headLineString +=str("\t"+dimer+"%")
+        headLineString +=str(","+dimer+"%")
 
     for trimer in trimerList:
-        headLineString +=str("\t"+trimer+"%")
+        headLineString +=str(","+trimer+"%")
     headLineString += "\n"
     outPutFile.write(headLineString)
-    print(headLineString)
     return outPutFile
     
 def dataParser(SequenceInput, path): #Acquise the features of a given file in folder
     
     outPutLine = '' #references the outPutLine
     for curRecord in SeqIO.parse(SequenceInput, "fasta"):
-        outPutLine += '%s\t' % curRecord.id #every outPutline does start with the id of the record
-        length = len(curRecord) #
-        outPutLine += '%i\t' % (length)
+        outPutLine += '%s,' % curRecord.id #every outPutline does start with the id of the record
+        length = len(curRecord.seq) #
+        outPutLine += '%i,' % (length)
         lengthstr = str(length)
         print("Current iterated sequence length: "+lengthstr)
         for Base in DNABases:
             pCount = curRecord.seq.count(Base)
             pBasePercentage = float(pCount)/length
-            outPutLine += '%f\t' % (pBasePercentage)
+            outPutLine += '%f,' % (pBasePercentage)
         print("Percentage of Bases in current sequence are done")
 
         for dimer in dimerList:
             dCount = curRecord.seq.count(dimer)
             bBasePercentage = float(dCount)/length
-            outPutLine += '%f\t' % (bBasePercentage)
+            outPutLine += '%f,' % (bBasePercentage)
 
         print("Percentage of dimer in current sequence are done")
 
         for trimer in trimerList:
             tCount = curRecord.seq.count(trimer)
             tBasePercentage = float(tCount)/length
-            outPutLine += '%f\t' % (tBasePercentage)
+            outPutLine += '%f,' % (tBasePercentage)
         
         print("Percentage of trimers in current sequence are done")
         outPutLine += '\n'
@@ -79,7 +78,7 @@ def secondTask(file):
     while 1:
         sTInput = input("[y/n]")
         if sTInput == "y":
-            df = pd.read_csv(file,index_col = 0, delimiter='\t')
+            df = pd.read_csv(file,index_col = 0,)
             print(df)
             thirdTask(df)
             break
@@ -98,8 +97,8 @@ def inputManager():
         if isdir == True:
             inputTwo = input("Warning: Please make sure your given Directory does only contain .fasta files.\n \n Do you wanna change? [y;n]")
             if inputTwo == "n":
-                print("\nok, we'll proceed. Please keep patient while the process")
-                outPutFileString = str(userInput+"features.txt")
+                print("\nok, we'll proceed. Please keep patient while the process\n")
+                outPutFileString = str(userInput+"features.csv")
                 outPut = headLine(outPutFileString)
                 directoryIterator(userInput, outPut)
                 secondTask(outPutFileString)    

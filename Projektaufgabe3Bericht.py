@@ -8,13 +8,14 @@ from Bio import SeqIO
 SequenceInput = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/HomoSapiensChromosome21_GRCh38p13PrimaryAssemblyAccessionNC_000021.fasta', 'r')
 output_file = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/nucleotide_counts.txt','w')
 output_file.write('Gene\tLength\tCG%\n')
-for cur_record in SeqIO.parse(SequenceInput, "fasta") : SequenceInput = cur_record.name
-C_count = cur_record.seq.count('C')
-G_count = cur_record.seq.count('G')
-length = len(cur_record.seq)
-cg_percentage = float(C_count + G_count) / length
-output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
-output_file.write(output_line)
+for cur_record in SeqIO.parse(SequenceInput, "fasta") : 
+    SequenceInput = cur_record.name
+    C_count = cur_record.seq.count('C')
+    G_count = cur_record.seq.count('G')
+    length = len(cur_record.seq)
+    cg_percentage = float(C_count + G_count) / length
+    output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
+    output_file.write(output_line)
 output_file.close()
 
 
@@ -25,12 +26,12 @@ from Bio import SeqIO
 SequenceInput = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/ChinchillalanigeraisolateChin_1UnplacedGenomicScaffoldChiLan1Scaffold00001WholeGenomeShotgunSequenceAccessionNW004955402.fasta', 'r')
 output_file = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/nucleotide_counts.txt','a')
 for cur_record in SeqIO.parse(SequenceInput, "fasta") : SequenceInput = cur_record.name
-C_count = cur_record.seq.count('C')
-G_count = cur_record.seq.count('G')
-length = len(cur_record.seq)
-cg_percentage = float(C_count + G_count) / length
-output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
-output_file.write(output_line)
+    C_count = cur_record.seq.count('C')
+    G_count = cur_record.seq.count('G')
+    length = len(cur_record.seq)
+    cg_percentage = float(C_count + G_count) / length
+    output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
+    output_file.write(output_line)
 output_file.close()
 
 
@@ -42,12 +43,12 @@ SequenceInput = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Gr
 output_file = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/nucleotide_counts.txt','a')
 #output_file.write('Gene\tA\tC\tG\tT\tLength\tCG%\n')
 for cur_record in SeqIO.parse(SequenceInput, "fasta") : SequenceInput = cur_record.name
-C_count = cur_record.seq.count('C')
-G_count = cur_record.seq.count('G')
-length = len(cur_record.seq)
-cg_percentage = float(C_count + G_count) / length
-output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
-output_file.write(output_line)
+    C_count = cur_record.seq.count('C')
+    G_count = cur_record.seq.count('G')
+    length = len(cur_record.seq)
+    cg_percentage = float(C_count + G_count) / length
+    output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
+    output_file.write(output_line)
 output_file.close()
 
 
@@ -59,14 +60,14 @@ SequenceInput = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Gr
 output_file = open('/media/steven/3e435451-bd40-4af1-844c-494c5d0eb5412/THM/Grundbionformatik/project 3/nucleotide_counts.txt','a')
 #output_file.write('Gene\tA\tC\tG\tT\tLength\tCG%\n')
 for cur_record in SeqIO.parse(SequenceInput, "fasta") : SequenceInput = cur_record.name
-A_count = cur_record.seq.count('A')
-C_count = cur_record.seq.count('C')
-G_count = cur_record.seq.count('G')
-T_count = cur_record.seq.count('T')
-length = len(cur_record.seq)
-cg_percentage = float(C_count + G_count) / length
-output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
-output_file.write(output_line)
+    A_count = cur_record.seq.count('A')
+    C_count = cur_record.seq.count('C')
+    G_count = cur_record.seq.count('G')
+    T_count = cur_record.seq.count('T')
+    length = len(cur_record.seq)
+    cg_percentage = float(C_count + G_count) / length
+    output_line = '%s\t%i\t%f\n' % (SequenceInput, length, cg_percentage)
+    output_file.write(output_line)
 output_file.close()
 
 

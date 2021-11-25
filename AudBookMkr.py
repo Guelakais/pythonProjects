@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 def inputManager():
-    while True:
+    while 1:
         userInput = input("Hello, I'm here to help you to convert a text files to audio files. \n Please tell me the path of your File: ")
         my_file = Path(userInput)
         if my_file.is_file():
