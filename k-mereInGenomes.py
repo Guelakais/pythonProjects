@@ -5,27 +5,7 @@ from pathlib import Path
 import os
 import pandas as pd
 #%% #Special sign to uses this part of the code in vscode as one block
-DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
-dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
-trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
-###########################
-#def read_file(path):    #useless right now
-#    with open(path, mode="r", encoding="utf8") as infile:
-#        seq = ''.join([line.strip("\n\r").replace("N", "").replace(",", "")
-#                       .replace(" ", "") for line in infile if not line.startswith(">")])
-#    return seq
-###########################
-
-#%%
-def directoryIterator(directory, outputfile):   #to iterate over a whole given directory
-
-    for filename in os.listdir(directory): #uses listdir from os package to generate al list from the files of a given folder
-        fileDirectory = str(directory+filename) #produces a string
-        dataParser(fileDirectory, outputfile) #Acquise the features of every File in given folder
-    outputfile.close()
-
-def headLine(dirk):
-    outPutFile = open(dirk,'w')
+def headLine():
     headLineString = str("Gene,length")
     for Base in DNABases:
         headLineString +=str(","+Base+"%")
@@ -36,39 +16,54 @@ def headLine(dirk):
     for trimer in trimerList:
         headLineString +=str(","+trimer+"%")
     headLineString += "\n"
-    outPutFile.write(headLineString)
-    return outPutFile
+    return headLineString
+
+DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
+dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
+trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
+strHeadLine = headLine()
+#%%
+def directoryIterator(directory):   #to iterate over a whole given directory
+    featureOutPut = ""
+    for filename in os.listdir(directory): #uses listdir from os package to generate al list from the files of a given folder
+        fileDirectory = str(directory+filename) #produces a string
+        featureOutPut += dataParser(fileDirectory) #Acquise the features of every File in given folder
+    return featureOutPut
     
-def dataParser(SequenceInput, path): #Acquise the features of a given file in folder
-    
-    outPutLine = '' #references the outPutLine
+def dataParser(SequenceInput): #Acquise the features of a given file in folder
+    featureOutPutLine = '' #references the featureOutPutLine
     for curRecord in SeqIO.parse(SequenceInput, "fasta"):
-        outPutLine += '%s,' % curRecord.id #every outPutline does start with the id of the record
+        featureOutPutLine += '%s,' % curRecord.id #every outPutline does start with the id of the record
         length = len(curRecord.seq) #
-        outPutLine += '%i,' % (length)
+        featureOutPutLine += '%i,' % (length)
         lengthstr = str(length)
         print("Current iterated sequence length: "+lengthstr)
         for Base in DNABases:
             pCount = curRecord.seq.count(Base)
             pBasePercentage = float(pCount)/length
-            outPutLine += '%f,' % (pBasePercentage)
+            featureOutPutLine += '%f,' % (pBasePercentage)
         print("Percentage of Bases in current sequence are done")
-
+        
         for dimer in dimerList:
             dCount = curRecord.seq.count(dimer)
             bBasePercentage = float(dCount)/length
-            outPutLine += '%f,' % (bBasePercentage)
+            featureOutPutLine += '%f,' % (bBasePercentage)
 
         print("Percentage of dimer in current sequence are done")
 
         for trimer in trimerList:
             tCount = curRecord.seq.count(trimer)
             tBasePercentage = float(tCount)/length
-            outPutLine += '%f,' % (tBasePercentage)
+            featureOutPutLine += '%f,' % (tBasePercentage)
         
         print("Percentage of trimers in current sequence are done")
-        outPutLine += '\n'
-        path.write(outPutLine)
+        featureOutPutLine += '\n'
+    return featureOutPutLine
+
+def cheatSheet(fileName ,strOne, strTwo):
+    with open(fileName, 'w') as notice:
+        fileInput = str(strOne +strTwo)
+        fileName.write(fileInput)
 
 def thirdTask(file):
     print("yo")
@@ -99,8 +94,8 @@ def inputManager():
             if inputTwo == "n":
                 print("\nok, we'll proceed. Please keep patient while the process\n")
                 outPutFileString = str(userInput+"features.csv")
-                outPut = headLine(outPutFileString)
-                directoryIterator(userInput, outPut)
+                output = directoryIterator(userInput)
+                cheatSheet(outPutFileString , strHeadLine, output)
                 secondTask(outPutFileString)    
                 break
             elif inputTwo == "y":
@@ -108,6 +103,7 @@ def inputManager():
 
         else:
             print("Given input is not a directory. Please again")
+
 
 
 inputManager()
