@@ -21,7 +21,6 @@ def headLine():
 DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
 dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
 trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
-strHeadLine = headLine()
 #%%
 def directoryIterator(directory):   #to iterate over a whole given directory
     featureOutPut = ""
