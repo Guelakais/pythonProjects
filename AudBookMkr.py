@@ -13,18 +13,15 @@ def inputManager():
         my_file = Path(userInput)
         if my_file.is_file():
             userInput2 = input("Where do you want to save the file? [/path/Filename] \n Disclaimer: Ending is always mp3 ")
-            realOutput = userInput2 + ".mp3"
-            AudBookMkr(userInput, realOutput)
+            AudBookMkr(userInput, userInput2+".mp3")
             break
         else:
             print("no such path found, please try again")
 
 def AudBookMkr(file, audio):
     with open(file, "r") as fh:
-        myText = fh.read().replace("\n", " ")
         # Language we want to use 
-        language = 'en'
-        output = gTTS(text=myText, lang=language, slow=False)
+        output = gTTS(text=fh.read().replace("\n", " "), lang='en', slow=False)
         output.save(audio)
 
 inputManager()

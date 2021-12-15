@@ -12,11 +12,8 @@ def dictMod(dict a):
     g = 0
     for v in a:
         g += v
-
     for k, u in a.items:
-    vpValue = u/g
-    vpKey = f"{k}in Prozent"
-    vProzent[vpKey] = vpValue
+    vProzent[f"{k}in Prozent"] = u/g
 
 x = np.array([m = vProzent.get(x) for x in vProzent])
 label = [n for n in vProzent]
