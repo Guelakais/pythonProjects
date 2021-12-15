@@ -6,29 +6,25 @@ import os
 import pandas as pd
 #%% #Special sign to uses this part of the code in vscode as one block
 def headLine():
-    headLineString = str("Gene,length")
-    for Base in DNABases:
-        headLineString +=str(","+Base+"%")
-
-    for dimer in dimerList:
-        headLineString +=str(","+dimer+"%")
-
-    for trimer in trimerList:
-        headLineString +=str(","+trimer+"%")
-    headLineString += "\n"
-    return headLineString
+    return "Gene,length"+(
+        ''.join(f",{Base}%" for Base in DNABases
+        ))+(
+            ''.join(f",{dimer}%" for dimer in dimerList
+            ))+(
+                ''.join(f",{trimer}%" for trimer in trimerList
+                ))+"\n"
 
 DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
 dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
 trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
+strHeadLine = headLine()
 #%%
 def directoryIterator(directory):   #to iterate over a whole given directory
     featureOutPut = ""
     for filename in os.listdir(directory): #uses listdir from os package to generate al list from the files of a given folder
-        fileDirectory = str(directory+filename) #produces a string
-        featureOutPut += dataParser(fileDirectory) #Acquise the features of every File in given folder
+        featureOutPut += dataParser(str(directory+filename)) #Acquise the features of every File in given folder
     return featureOutPut
-    
+
 def dataParser(SequenceInput): #Acquise the features of a given file in folder
     featureOutPutLine = '' #references the featureOutPutLine
     for curRecord in SeqIO.parse(SequenceInput, "fasta"):
@@ -36,33 +32,31 @@ def dataParser(SequenceInput): #Acquise the features of a given file in folder
         length = len(curRecord.seq) #
         featureOutPutLine += '%i,' % (length)
         lengthstr = str(length)
-        print("Current iterated sequence length: "+lengthstr)
+        print(f"Current iterated sequence length: {lengthstr}")
         for Base in DNABases:
-            pCount = curRecord.seq.count(Base)
-            pBasePercentage = float(pCount)/length
-            featureOutPutLine += '%f,' % (pBasePercentage)
+            featureOutPutLine += '%f,' % (
+                float(
+                    curRecord.seq.count(Base)
+                    )/length)
         print("Percentage of Bases in current sequence are done")
         
         for dimer in dimerList:
-            dCount = curRecord.seq.count(dimer)
-            bBasePercentage = float(dCount)/length
-            featureOutPutLine += '%f,' % (bBasePercentage)
-
+            featureOutPutLine += '%f,' % (
+                float(curRecord.seq.count(dimer)
+                )/length)
         print("Percentage of dimer in current sequence are done")
 
-        for trimer in trimerList:
-            tCount = curRecord.seq.count(trimer)
-            tBasePercentage = float(tCount)/length
-            featureOutPutLine += '%f,' % (tBasePercentage)
-        
+        for trimer in trimerList: 
+            featureOutPutLine += '%f,' % (
+                float(curRecord.seq.count(trimer)
+                )/length)
         print("Percentage of trimers in current sequence are done")
         featureOutPutLine += '\n'
     return featureOutPutLine
 
 def cheatSheet(fileName ,strOne, strTwo):
     with open(fileName, 'w') as notice:
-        fileInput = str(strOne +strTwo)
-        fileName.write(fileInput)
+        fileName.write(str(strOne +strTwo))
 
 def thirdTask(file):
     print("yo")

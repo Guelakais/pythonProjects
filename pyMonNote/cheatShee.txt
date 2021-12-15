@@ -1,0 +1,15 @@
+monitoring
+|-api.py
+|-crypto.py
+|-website.py
+notifier
+|-sms.py
+|-email.py
+|-slack.py
+|-telegram.py
+handler.py
+.env (includes all relevant variables)
+serverless.yml (serverless config file)
+requirements.txt (specifies dependencies)
+package.json (configures our node dependencies - think of it like a more powerful requirements.txt but for node)
+.gitignore

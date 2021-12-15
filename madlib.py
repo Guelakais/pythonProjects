@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #import module
 from tkinter import *
 
