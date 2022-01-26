@@ -98,5 +98,4 @@ def inputManager():
             print("Given input is not a directory. Please again")
 
 
-
 inputManager()

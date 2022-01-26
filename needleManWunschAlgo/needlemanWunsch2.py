@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import pandas as pd #to create data frames
 from numpy import full #to build the arrays
-
-
+import subprocess
+import os
 
 def needlemanWunsch(lista, listb, rowLen, colLen):
     levensteinTable = full([rowLen, colLen],0)
@@ -29,7 +29,6 @@ down_arrow = "\u2193"
 leftArrow = "\u2190"
 down_right_arrow = "\u2198"
 upLeftArrow = "\u2196"
-
 
 def needlemanWunschTraceBack(listx,listy,rows,columns, gapPenalty = -1, matchBonus = 1, mismatchPenalty = -1):
     #This algorithm will fill out the Penalty Scoreboard and the Arrow Score board
