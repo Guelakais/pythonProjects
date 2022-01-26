@@ -1,0 +1,14 @@
+#Gehe zu Datei 'needlemanWunschAlgorithm2.py'
+#Gehe in Zeile 123, such dir ein Beispiel - Zeile 124 bis 128-
+#aus, dekommentiere es und dekommentiere Zeile 129.
+#Wenn du dir selbst ein Beispiel ausdenken willst, 
+#Makiere dir eine der Zeilen von 124 bis 128,
+#Kopiere sie vor Zeile 129, trage beliebige texte
+#zwischen den ''-Zeichen ein
+#dekommentiere Zeile 129 und führe die Datei aus.
+
+#für alles weitere musst du dir mithilfe eines - 
+#wie in 'NCBIQuery.sh' enthalten - vergleichbaren
+#Querys eine Sequenzsammlung vom NCBI ziehen,
+#den Dateipfad und den Zielpfad in Zeile 164 in den Funktionsaufruf
+#eintragen oder es wird nicht richtig funktionieren.

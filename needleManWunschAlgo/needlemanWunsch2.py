@@ -5,7 +5,7 @@ import subprocess
 import os
 from itertools import groupby
 
-def needlemanWunsch(lista, listb, rowLen, colLen):
+def needlemanWunsch(lista, listb, rowLen, colLen): #o(n*m)
     levensteinTable = full([rowLen, colLen],0)
 
     for j in range(0,colLen):       #Fill out the first row
@@ -31,7 +31,7 @@ leftArrow = "\u2190"
 down_right_arrow = "\u2198"
 upLeftArrow = "\u2196"
 
-def needlemanWunschTraceBack(listx,listy,rows,columns, gapPenalty = -1, matchBonus = 1, mismatchPenalty = -1):
+def needlemanWunschTraceBack(listx,listy,rows,columns, gapPenalty = -1, matchBonus = 1, mismatchPenalty = -1): #o(n*m)
     #This algorithm will fill out the Penalty Scoreboard and the Arrow Score board
     penaltyArray = full([rows, columns],0)  #build up the penalty score Array
     tracerArray = full([rows, columns],"-") #build up the Array for the traceback arrows
@@ -62,38 +62,38 @@ def needlemanWunschTraceBack(listx,listy,rows,columns, gapPenalty = -1, matchBon
     return tracerArray, penaltyArray
 
 def traceback_alignment(traceback_array,listC,listD,up_arrow = upArrow ,\
-                        left_arrow=leftArrow,up_left_arrow=upLeftArrow,stop="-"):
+                        left_arrow=leftArrow,up_left_arrow=upLeftArrow,stop="-"): #o(n)
     
-    row = len(listC)
+    row = len(listC)    #The Traceback Algo needs the sequences anyway
     col = len(listD)
-    arrow = traceback_array[row,col]
-    alignedSeq1 = ""
-    alignedSeq2 = ""
-    alignmentIndicator = ""
-    while arrow != "-":
-            arrow = traceback_array[row,col]
-            print(f"Currently on row: {row} and col: {col}; Arrow: {arrow}")
+    arrow = traceback_array[row,col]    #to get the right arrow for the current position
+    alignedSeq1 = ""    #to initiate the produced alignment upper line
+    alignedSeq2 = ""    #to initiate the produced alignment under line
+    alignmentIndicator = "" #to indicate the alighment
+    while arrow != "-":     #No Arrow, no interes
+            arrow = traceback_array[row,col]    #the current position in the array inside the loop
+            print(f"Currently on row: {row} and col: {col}; Arrow: {arrow}")    #Because you could get bored without visual process indication
             
-            if arrow == up_arrow: 
+            if arrow == up_arrow: #up_arrow shows a gap in under sequence
                 alignedSeq2 = "-"+alignedSeq2 
                 alignedSeq1 = listC[row-1] + alignedSeq1
-                alignmentIndicator = " "+alignmentIndicator
+                alignmentIndicator = " "+alignmentIndicator #to show that here is no alignment
                 row -=1
                             
-            elif arrow == up_left_arrow:
+            elif arrow == up_left_arrow: #up_left_arrow shows that here is accordance between the sequences
                 alignedSeq1 = listC[row-1] + alignedSeq1
                 alignedSeq2 = listD[col-1] + alignedSeq2
                 if listC[row-1] == listD[col-1]:
-                    alignmentIndicator = "|"+alignmentIndicator
+                    alignmentIndicator = "|"+alignmentIndicator #visual indicator for accordance
                 else:
-                    alignmentIndicator = " "+alignmentIndicator
+                    alignmentIndicator = " "+alignmentIndicator #visual indicator for no accordance
                 row -=1
                 col -=1
                 
             elif arrow == left_arrow:
                 alignedSeq1 = "-"+alignedSeq1
                 alignedSeq2 = listD[col-1] + alignedSeq2
-                alignmentIndicator = " "+alignmentIndicator
+                alignmentIndicator = " "+alignmentIndicator #visual indicator for no accordance
                 col -=1
                 
             elif arrow == stop:
@@ -105,53 +105,61 @@ def traceback_alignment(traceback_array,listC,listD,up_arrow = upArrow ,\
             
     return f"{alignedSeq1}\n{alignmentIndicator}\n{alignedSeq2}"
 
-def seqHandle(seq1, seq2):
-    columnLabels = [label for label in "-"+seq1]
-    rowLabels = [label for label in "-"+seq2]
-    nRows = len("-"+seq1)
-    nColumns = len("-"+seq2)
-    levensteinBoard = needlemanWunsch(seq1, seq2,nRows,nColumns)
-    arrowArray, zuchtArray, = needlemanWunschTraceBack(seq1, seq2,nRows, nColumns)
-    return (f"This is our ScoreBoard with all the important distanzes\n"
+def seqHandle(seq1, seq2):  #to handle a two given Sequences o(n*m)
+    columnLabels = [label for label in "-"+seq1] #for the later buildet Dataframes
+    rowLabels = [label for label in "-"+seq2]   ##for the later buildet Dataframes
+    nRows = len("-"+seq1)   #Count of all rows
+    nColumns = len("-"+seq2)    #Count of all columns
+    levensteinBoard = needlemanWunsch(seq1, seq2,nRows,nColumns)    #to build the Board with the levensteinDistances
+    arrowArray, zuchtArray, = needlemanWunschTraceBack(seq1, seq2,nRows, nColumns)  #Important for the traceback
+    levensteinDistance = levensteinBoard[len(seq1)][len(seq2)]  #I'll explain the Levenstein Distance in the Readme
+    return (f"This is our ScoreBoard with all the important distances\n"\
     f"{pd.DataFrame(levensteinBoard, index=columnLabels, columns= rowLabels)}\n"\
-    f"The Levenstein Distanz of{seq1} and {seq2} is {levensteinBoard[len(seq1)][len(seq2)]}.\n"\
+    f"The Levenstein Distance of{seq1} and {seq2} is {levensteinDistance}.\n"\
     f"The trace back arrow board:\n{pd.DataFrame(arrowArray, index=columnLabels, columns= rowLabels)}\n"\
     f"The Penalty Score Board:\n{pd.DataFrame(zuchtArray, index=columnLabels, columns= rowLabels)}\n"\
-    f"{traceback_alignment(arrowArray,seq1,seq2)}")
+    f"{traceback_alignment(arrowArray,seq1,seq2)}"), levensteinDistance
 
+#examples to play with the seqHandle. first decomate the line with the example strings. than '#print(seqhandling)'
+#seqhandling, distance = seqHandle("ATTACA","ATGCT")
+#seqhandling, distance = seqHandle("BURN THE ART OR BLACK SUN DIES","BURNT HEART ORB LACKS UNDIES")
+#seqhandling, distance = seqHandle("I LOVE MY LARGE LOOPS","I LOVE MYLAR GEL OOPS")
+#seqhandling, distance = seqHandle("I AM SINKING","I AM SIN KING")
+#seqhandling, distance = seqHandle("CANTELOPE","CANT ELOPE")
+#print(seqhandling)
 
-#Asserts
-#print(seqHandle("ATTACA","ATGCT"))
-#print(seqHandle("BURN THE ART OR BLACK SUN DIES","BURNT HEART ORB LACKS UNDIES"))
-#print(seqHandle("I LOVE MY LARGE LOOPS","I LOVE MYLAR GEL OOPS"))
-#print(seqHandle("I AM SINKING","I AM SIN KING"))
-#print(seqHandle("CANTELOPE","CANT ELOPE"))
-
-def fileProcessing2(fileE):
-    with open(f'{os.getcwd()}/{fileE}', 'r') as fh:
-        faiter = (x[1] for x in groupby(fh, lambda line: line[0] ==">"))
+def fileProcessGenerator(fileE):    #to iterate over a SequenceSummaryFile o(n)
+    with open(f'{os.getcwd()}/{fileE}', 'r') as fh: #to savely work with the given file
+        faiter = (x[1] for x in groupby(fh, lambda line: line[0] ==">"))    #to group the single sequences to their related header Line
         for header in faiter:
-            headerStr = header.__next__()[1:].strip()
+            headerStr = header.__next__()[1:].strip() #to fetch the header line from the group
             yield (
-                headerStr.strip().replace('>', '').split()[0],  #name 
+                headerStr.strip().replace('>', '').split()[0],  #name of the sequence
                 ''.join(s.strip() for s in faiter.__next__()))  #sequence
 
-def sequenceAnalyzer(fileName, OutputPath):
+def FileOfSequencesAnalisis(fileName, OutputPath): #to analyse a SequenceSummaryFile o(n*m*a*b)
 
     print(f"\n\n Warning: I'll proceed really a lot of Sequence combinations Sequences.\n\n This will take Time! Please stay patient")
-    totalOverKillAnalysisisstring = ""
-    processnumber = 0
-    for ff in fileProcessing2(fileName):
-        for fo in fileProcessing2(fileName):
-            if ff != fo:
+    processnumber = 1 #We want to know, in which process we are
+    levensteinDistanceCounter= 0 #To count all Levenstein distances so far
+    LevensteinDistancesAverage = 0 #to calculate the average of all levenstein distances so far
+    try:    #because someone could try shit
+        for ff in fileProcessGenerator(fileName):   #the main loop devines the sequence in the line
+            for fo in fileProcessGenerator(fileName):   #the main loop devines the sequence in the column
+                if ff != fo:    #nobody wants to know the levenstein Distance of two identical sequences
+                    name, seqOne, = ff  #to get the important stuff from the generator
+                    namel, seqTwo, = fo
+                    print(f"processing for {name} and {namel} -Process Nr.{processnumber}\n"\
+                        f"current average Levenstein Distances is {LevensteinDistancesAverage}")    #to show, that the process works well
+                    seqHandling, currentLevensteinDistance = seqHandle(seqOne, seqTwo) #to get the struff from seqHandle
+                    with open(f"{OutputPath}/For_{name}_and_{namel}.txt", 'w') as bitch:    #to savely save our Output to a file
+                        bitch.write(f"Analysis for {name} and {namel}: \n{seqHandling}")
+                    levensteinDistanceCounter += currentLevensteinDistance
+                    LevensteinDistancesAverage = levensteinDistanceCounter/processnumber
+                    processnumber += 1
+    except RuntimeError:
+        print("invalid File. Use a File with inherited fasta Sequences with a Header Line and Sequences")
+    print(f"I'm done. Here is the average Levenstein Distance of the analysed File:\n{LevensteinDistancesAverage}")
 
-                name, seqOne, = ff
-                namel, seqTwo, = fo
-                print(f"processing for {name} and {namel} -Process Nr.{processnumber}")
-                processnumber += 1
-                with open(f"{OutputPath}/For_{name}_and_{namel}.txt", 'w') as bitch:
-                    bitch.write(f"Analysis for {name} and {namel}: \n{seqHandle(seqOne, seqTwo)}")
-    print("Ich habe fertig")
-
-sequenceAnalyzer('/s_sclerot.fa', 'AnalysedFiles')
+#FileOfSequencesAnalisis('s_sclerot.fa', 'AnalysedFiles')
 
