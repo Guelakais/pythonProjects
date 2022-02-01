@@ -120,14 +120,6 @@ def seqHandle(seq1, seq2):  #to handle a two given Sequences o(n*m)
     f"The Penalty Score Board:\n{pd.DataFrame(zuchtArray, index=columnLabels, columns= rowLabels)}\n"\
     f"{traceback_alignment(arrowArray,seq1,seq2)}"), levensteinDistance
 
-#examples to play with the seqHandle. first decomate the line with the example strings. than '#print(seqhandling)'
-#seqhandling, distance = seqHandle("ATTACA","ATGCT")
-#seqhandling, distance = seqHandle("BURN THE ART OR BLACK SUN DIES","BURNT HEART ORB LACKS UNDIES")
-#seqhandling, distance = seqHandle("I LOVE MY LARGE LOOPS","I LOVE MYLAR GEL OOPS")
-#seqhandling, distance = seqHandle("I AM SINKING","I AM SIN KING")
-#seqhandling, distance = seqHandle("CANTELOPE","CANT ELOPE")
-#print(seqhandling)
-
 def fileProcessGenerator(fileE):    #to iterate over a SequenceSummaryFile o(n)
     with open(f'{os.getcwd()}/{fileE}', 'r') as fh: #to savely work with the given file
         faiter = (x[1] for x in groupby(fh, lambda line: line[0] ==">"))    #to group the single sequences to their related header Line
@@ -160,6 +152,4 @@ def FileOfSequencesAnalisis(fileName, OutputPath): #to analyse a SequenceSummary
     except RuntimeError:
         print("invalid File. Use a File with inherited fasta Sequences with a Header Line and Sequences")
     print(f"I'm done. Here is the average Levenstein Distance of the analysed File:\n{LevensteinDistancesAverage}")
-
-#FileOfSequencesAnalisis('s_sclerot.fa', 'AnalysedFiles')
 

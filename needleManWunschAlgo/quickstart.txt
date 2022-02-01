@@ -1,14 +1,24 @@
-#Gehe zu Datei 'needlemanWunschAlgorithm2.py'
-#Gehe in Zeile 123, such dir ein Beispiel - Zeile 124 bis 128-
-#aus, dekommentiere es und dekommentiere Zeile 129.
+#Gehe zu Datei 'exampleUse.py'
+#Gehe in Zeile 5 für Beispiele für 'seqHandle', 
+#dekommentiere eines der Beispiele 
+#und den daruter liegenden print Befehl.
 #Wenn du dir selbst ein Beispiel ausdenken willst, 
-#Makiere dir eine der Zeilen von 124 bis 128,
-#Kopiere sie vor Zeile 129, trage beliebige texte
-#zwischen den ''-Zeichen ein
-#dekommentiere Zeile 129 und führe die Datei aus.
+#folge den angegebenen Beispielen,
+#Kopiere sie vor die Zeile mit dem 'print' 
+#Befehl, trage beliebige texte zwischen den
+# ''-Zeichen ein, dekommentiere dein Beispiel, 
+#den 'print'-Befehl und führe die Datei aus.
+
+#Desweiteren ist in dieser Datei ein 'FileOfSequencesAnalisis' Beispiel enthalten.
+#Hier ist Vorsicht geboten, da diese Funktion zur Handhabung immenser Datenströme konstruhiert wurde.
+#Daher wird sie sehr lange brauchen und whärend ihrer Ausführung den Ordner 'AnalysedFiles' stetig befüllen.
 
 #für alles weitere musst du dir mithilfe eines - 
 #wie in 'NCBIQuery.sh' enthalten - vergleichbaren
 #Querys eine Sequenzsammlung vom NCBI ziehen,
-#den Dateipfad und den Zielpfad in Zeile 164 in den Funktionsaufruf
+#den Dateipfad und den Zielpfad in  in den Funktionsaufruf
 #eintragen oder es wird nicht richtig funktionieren.
+
+#Zum eigenen Debuggen empfehle ich regelmäßig den bash-Befehl:
+#rm -r AnalysedFiles; mkdir AnalysedFiles
+#zu verwenden
