@@ -1,7 +1,3 @@
-#Surname: Seven Herbert Gerd
-#Last name: Fleischer
-#Matrikelnumber: 5326514
-
 #Explanations to the needleManWunschAlgo Stuff
 #Please make sure, you use the Python 3.8.8.8 64-bit('base':conda) Environment or lower, so the inheratidet Algorithms can work properly
 #chapters of this ReadMe.txt
