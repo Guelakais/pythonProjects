@@ -5,25 +5,24 @@ from pathlib import Path
 import os
 import pandas as pd
 #%% #Special sign to uses this part of the code in vscode as one block
-def headLine():
+def headLine(singleChar, doubleChar, tribleChar):
     return "Gene,length"+(
-        ''.join(f",{Base}%" for Base in DNABases
+        ''.join(f",{Base}%" for Base in singleChar
         ))+(
-            ''.join(f",{dimer}%" for dimer in dimerList
+            ''.join(f",{dimer}%" for dimer in doubleChar
             ))+(
-                ''.join(f",{trimer}%" for trimer in trimerList
+                ''.join(f",{trimer}%" for trimer in tribleChar
                 ))+"\n"
 
 DNABases = ["A", "T", "C", "G"]     #List with all current DNA Bases
 dimerList = [x+y for x in DNABases for y in DNABases]   #List comprehension to deliver a list with all possible dimers
 trimerList = [x+y+z for x in DNABases for y in DNABases for z in DNABases]  #List comprehension to deliver all possible trimers
-strHeadLine = headLine()
+strHeadLine = headLine(DNABases, dimerList, trimerList)
 #%%
 def directoryIterator(directory):   #to iterate over a whole given directory
-    featureOutPut = ""
-    for filename in os.listdir(directory): #uses listdir from os package to generate al list from the files of a given folder
-        featureOutPut += dataParser(str(directory+filename)) #Acquise the features of every File in given folder
-    return featureOutPut
+    return ''.join(
+        f'{dataParser(str(directory+filename))}'for filename in os.listdir(directory)
+        )
 
 def dataParser(SequenceInput): #Acquise the features of a given file in folder
     featureOutPutLine = '' #references the featureOutPutLine
@@ -99,3 +98,4 @@ def inputManager():
 
 
 inputManager()
+# %%

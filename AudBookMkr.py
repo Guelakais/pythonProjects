@@ -20,7 +20,6 @@ def inputManager():
 
 def AudBookMkr(file, audio):
     with open(file, "r") as fh:
-        # Language we want to use 
         output = gTTS(text=fh.read().replace("\n", " "), lang='en', slow=False)
         output.save(audio)
 

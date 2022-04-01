@@ -1,0 +1,1 @@
+print(FibArray[int(input())],FibArray[int(input())])

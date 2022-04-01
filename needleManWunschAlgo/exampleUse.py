@@ -8,6 +8,6 @@ import needlemanWunsch2
 #seqhandling, distance = needlemanWunsch2.seqHandle("I LOVE MY LARGE LOOPS","I LOVE MYLAR GEL OOPS")
 #seqhandling, distance = needlemanWunsch2.seqHandle("I AM SINKING","I AM SIN KING")
 #seqhandling, distance = needlemanWunsch2.seqHandle("CANTELOPE","CANT ELOPE")
-#print(seqhandling)
+print(seqhandling)
 
 #needlemanWunsch2.FileOfSequencesAnalisis('s_sclerot.fa', 'AnalysedFiles')
