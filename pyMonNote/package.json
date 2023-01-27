@@ -14,7 +14,7 @@
   "author": "Guelakais",
   "license": "ISC",
   "dependencies": {
-    "serverless": "^1.54.0",
+    "serverless": "^3.27.0",
     "serverless-python-requirements": "^5.1.1"
   }
 }
